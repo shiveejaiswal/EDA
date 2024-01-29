@@ -1,0 +1,158 @@
+# **Hotel Reviews **
+## LA - 1 Exploratory Data Analysis
+## Submitted By:- Shivee Jaiswal,1NT21IS152, 5 C
+## ***Introduction***
+#### The Hotel Reviews dataset is a collection of customer reviews and feedback about various hotels, providing valuable insights into the hospitality industry. Typically sourced from online review platforms or booking websites, this dataset encompasses a diverse range of hotels worldwide. Each review entry includes details such as the hotel's name, location, user ratings, and textual feedback from guests. Analyzing this dataset can offer profound insights into customer preferences, satisfaction levels, and specific aspects of hotels that influence their experiences. Researchers and businesses can leverage sentiment analysis and natural language processing techniques to extract sentiments expressed in these reviews, enabling them to understand trends, identify areas for improvement, and enhance overall customer satisfaction in the hotel industry. The Hotel Reviews dataset is a valuable resource for researchers, data scientists, and industry professionals aiming to gain a deeper understanding of customer opinions and preferences in the realm of hospitality.
+
+```{r}
+# Load the Dataset
+data <- read.csv("C:\\Users\\Shatakshi\\Desktop\\Datafiniti_Hotel_Reviews.csv")
+# Data Summary
+summary(data)
+```
+
+```{r}
+# Gives the structure
+str(data)
+```
+
+```{r}
+#To find missing values
+any(is.na(data))
+```
+
+```{r}
+# Retrieves the names of all the columns present in the dataset
+names(data)
+```
+
+```{r}
+# Outputs the initial rows of the dataset
+head(data)
+```
+
+```{r}
+# Outputs the summary of the dataset like max, min, Quartiles etc..
+summary(data$latitude)
+```
+
+```{r}
+# Outputs the standard deviation of the dataset
+sd(data$longitude)
+```
+
+```{r}
+sum(is.na(data))
+```
+
+```{r}
+ # for data manipulation
+library(dplyr)
+```
+
+```{r}
+# visualizing interesting and interactive graphs
+library(ggplot2)
+```
+
+```{r}
+
+#Calculate mean of a specific column
+ mean(data$latitude)
+
+```
+
+```{r}
+#checking data type of a column
+class(data$latitude)
+```
+
+```{r}
+
+#Visualizing the latitude
+
+height<- sort(table(data$latitude), decreasing = TRUE)
+
+barplot(height[1:10], las = 3, main = "latitude")
+```
+
+```{r}
+# Plotting a Function Curve for the given dataset
+curve(x^2, from = -10, to = 10, col = "blue", lwd = 2)
+```
+
+```{r}
+# Creating a Scatter Plot for latitude and longitude
+library(ggplot2)
+ggplot(data, aes(x = latitude, y = longitude)) + geom_point()
+```
+
+
+
+```{r}
+# Making a Dot Plot of Hotel Review
+
+dotchart(data$latitude, pch = 19, col = "brown", main = "Dot Plot")
+```
+
+```{r}
+# generates a bar plot 
+ggplot(data,aes(x= postalCode, fill = "#FF5733")) + geom_bar ()
+```
+
+```{r}
+#View(tweets)
+data[3:4,]
+```
+
+```{r}
+ggplot(data) + aes(longitude,fill= longitude) + geom_bar() +geom_text(stat='count', aes(label=..count..), vjust=1.6, color="black")  + labs(title= 'Plot of longitude') +  theme_minimal() + guides(fill =  F)
+```
+
+```{r}
+ggplot(data) + aes(latitude,fill= latitude) + geom_bar() +geom_text(stat='count', aes(label=..count..), vjust=1.6, color="black")  + labs(title= 'Plot of Sentiments') +
+  scale_fill_manual(values = c("#ff576a","#3db5ff", "#66CC99"))+  theme_minimal() + guides(fill= F)
+```
+
+```{r}
+ggplot(data, aes(x = latitude , fill = longitude))+ geom_bar( colour = 'black')  + scale_fill_manual(values = c("#ff576a","#3db5ff", "#66CC99")) + labs(x = 'latitude', y = 'longitude', title ='hotel review ') + theme(axis.text.x = element_text(angle = 25, size=9)) +  theme_minimal() + guides(fill= F)
+```
+
+```{r}
+library(wordcloud)
+```
+
+```{r}
+
+library(gganimate)
+```
+
+# ***Analysis***
+#### The Hotel Reviews dataset provides a diverse collection of customer feedback, encompassing various hotels worldwide. Analyzing this dataset reveals valuable insights into customer preferences, satisfaction levels, and key factors influencing hotel experiences. Researchers can leverage sentiment analysis to extract sentiments from textual reviews, enabling a deeper understanding of overall trends and areas for improvement in the hospitality industry. The dataset facilitates comprehensive exploration of customer opinions, contributing to enhanced service quality and customer satisfaction strategies for hotel management.
+```{r}
+# Adding Means to a Box Plot
+boxplot(data$latitude, mean = TRUE, col = "red", main = "Box Plot with Means")
+```
+
+```{r}
+# Creating a Histogram for the hotel review
+ggplot(data, aes(x = latitude)) + geom_histogram(binwidth = 5, fill = "blue", color = "black")
+```
+
+```{r}
+# Making a Frequency Polygon for the hotel review
+plot(data$latitude, type = "l", lty = 1, col = "pink", main = "Frequency Polygon")
+```
+
+```{r}
+#Calculates the standard deviation a dataset
+sd(data$latitude)
+
+```
+
+```{r}
+#converting data type
+as.numeric(data$longitude)
+```
+
+### Github Link - https://github.com/shiveejaiswal/EDA
