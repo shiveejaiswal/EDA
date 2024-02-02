@@ -1,0 +1,244 @@
+# **US Census Dataset**
+
+### LA - 2 Exploratory Data Analysis
+
+### Submitted By:- Shivee Jaiswal,1NT21IS152, 5 C
+
+## ***Introduction***
+
+#### The U.S. Census Dataset is a comprehensive collection of demographic, economic, and social data gathered by the United States Census Bureau. Conducted decennially, the census provides a detailed snapshot of the American population and serves as a crucial resource for policymakers, researchers, and businesses. The dataset covers a wide range of variables, including population counts, age distribution, racial and ethnic demographics, housing characteristics, income levels, educational attainment, and employment statistics. The census data plays a vital role in shaping public policies, resource allocation, and political representation. Additionally, it facilitates in-depth analyses of societal trends, disparities, and the overall well-being of the U.S. population. As a foundational tool for understanding the dynamics of American society, the U.S. Census Dataset contributes significantly to informed decision-making and informed social and economic research.
+
+### Loading Libraries
+
+```{r}
+set.seed(123)
+
+# Data manipulation
+
+library(data.table)
+
+library(dplyr)
+
+library(DT)
+
+# Time manipulation
+
+library(lubridate)
+
+# Visualization
+
+library(ggplot2)
+
+library(plotrix)
+
+library(corrplot)
+
+library(ggdendro)
+
+library(ggrepel)
+
+# Wordcloud
+
+library(wordcloud)
+
+# Text manipulation
+
+library(tidytext)
+
+library(stringr)
+
+library(tm)
+
+library(sentimentr)
+
+library(wordcloud)
+
+library(RSentiment)
+```
+
+```{r}
+# Load the Dataset
+df <- read.csv("C:\\Users\\Shivee Jaiswal\\Desktop\\acs2015_census_tract_data.csv")
+# Data Summary
+summary(df)
+
+```
+
+##Histogram Graph
+
+```{r}
+library(ggplot2)
+ggplot(df, aes(x=Men)) +
+  geom_histogram(colour="red")
+```
+
+# Frequency graph
+
+```{r}
+ggplot(df, aes(x=Men, y=Women)) +
+  geom_col()
+```
+
+# Line Graph
+
+```{r}
+ggplot(df, aes(x=Men, y=TotalPop)) +
+  geom_line(colour="blue")
+```
+
+# Point graph
+
+```{r}
+ggplot(df, aes(x=Women, y=TotalPop)) +
+  geom_point()
+```
+
+# Boxplot
+
+```{r}
+ggplot(df, aes(x=White, y=Black)) +
+  geom_boxplot(colour="yellow")
+```
+
+# Line graph
+
+```{r}
+ggplot(df, aes(x=Native)) +
+  geom_line(stat="density", colour="brown") +
+  expand_limits(y=0)
+```
+
+# Density graph
+
+```{r}
+ggplot(df, aes(x=Citizen, y=after_stat(density))) +
+  geom_histogram(fill="cornsilk", colour="grey60", linewidth=.2) +
+  geom_density() +
+  xlim(500, 1050)
+
+```
+
+# Frequency polygon graph
+
+```{r}
+ggplot(df, aes(x=Income)) +
+  geom_freqpoly() 
+```
+
+# Violin graph
+
+```{r}
+library(gcookbook)
+df_p <- ggplot(df, aes(x= Men, y=Women)) 
+df_p + geom_violin(adjust=2, colour="pink3")
+```
+
+# Correlation graph
+
+```{r}
+library(corrplot)
+dfcorr <- data.frame(df$Men, df$Women, df$TotalPop)
+dfcorr <- cor(dfcorr)
+corrplot(dfcorr, method="square", shade.col= NA, tl.col="black", tl.srt=45)
+```
+
+```{r}
+p <- ggplot(data.frame(x=c(-3,3)), aes(x=x))
+p + stat_function(fun=dnorm)
+```
+
+# Network graph 
+
+```{r}
+library(igraph)
+gd <- graph(c(1,2,2,3,2,4,1,4,5,5,3,6))
+plot(gd)
+```
+
+```{r}
+p <- ggplot(df, aes(x=Poverty, y=ChildPoverty))
+p + geom_tile()
+```
+
+# Density graph
+
+```{r}
+library(ggplot2)
+
+ggplot(df, aes(x = Men, fill = Women)) +
+  geom_density(alpha = 0.5)
+```
+
+# Boxplot graph
+
+```{r}
+ggplot(head(df,50), aes(x = factor(White), y = Black, group = factor(White),fill=factor(White))) +
+  geom_boxplot(width = 0.3) +  # Adjust the width as needed
+  stat_summary(fun = "mean", geom = "point", shape = 18, size = 3, color = "red") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Adjust x-axis label rotation if needed
+```
+
+# 2D Density graph
+
+```{r}
+ggplot(df, aes(x = Women, y = Men)) +
+  geom_density_2d() +
+  labs(x = "Women", y = "Men") +
+  theme_minimal()
+```
+
+# Network graph
+
+```{r}
+library(igraph)
+
+set.seed(42)  # for reproducibility
+
+# Create a graph
+graph <- graph.data.frame(df[, c("Men", "Women", "TotalPop")], directed = FALSE)
+
+# Plot the network graph
+plot(graph, 
+     layout = layout_with_fr(graph),  # Use Fruchterman-Reingold layout
+     vertex.label = NA,  # Display category_id as node labels
+     edge.label = E(graph)$Women)  # Display views as edge labels
+```
+
+# Network graph
+
+```{r}
+set.seed(42)  # for reproducibility
+
+# Create a graph
+graph <- graph.data.frame(head(df,50)[, c("Men", "Women", "TotalPop")], directed = FALSE)
+
+# Plot the network graph
+plot(graph, 
+     layout = layout.circle(graph),  # Use Fruchterman-Reingold layout
+     vertex.label = NA,  # Display category_id as node labels
+     edge.label = E(graph)$Men)  # Display views as edge labels
+```
+
+# Dot plot
+
+```{r}
+# Making a Dot Plot of US Census Dataset
+
+dotchart(df$Men, pch = 19, col = "brown", main = "Dot Plot")
+```
+
+# Frequency graph
+
+```{r}
+# Making a Frequency Polygon for the US Census Dataset
+plot(df$Women, type = "l", lty = 1, col = "pink", main = "Frequency Polygon")
+```
+
+# Curve function
+
+```{r}
+# Plotting a Function Curve for the given dataset
+curve(x^2, from = -10, to = 10, col = "blue", lwd = 2)
+```
+
+### Github Link - https://github.com/shiveejaiswal/EDA
